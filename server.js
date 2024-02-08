@@ -11,9 +11,9 @@ const app = express();
 const cors = require("cors")
 const morgan = require("morgan")
 
-const ridesRouter = require('./routes/rides');
-const reviewsRouter = require('./routes/reviews');
-const arrived = require("./controllers/arrived");
+const arrivedRouter = require('./routes/arrived');
+const goalRouter = require('./routes/goal')
+const journalRouter = require('./routes/journal')
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json()); 

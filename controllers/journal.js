@@ -1,31 +1,40 @@
 const express = require('express')
-
+const {Arrived} = require('../models')
+const {Goal} = require('../models')
 
 const create = async (req,res) => {
-    const ride = await Ride.findById(req.params.id)
-
-    ride.reviews.push(req.body)
+    const arrived = await Arrived.findById(req.params.id)
+    const goal = await Goal.findById(req.params.id)
+    arrived.journal.push(req.body)
+    goal.journal.push(req.body)
     try {
-        await ride.save();
+        await arrived.save();
+        await goal.save();
+        res.json({arrived, goal})
       } catch (err) {
         res.status(400).json(err);  
       }
     }
 
-const deleteJournal = async(req, res) => {
-
-        Ride.findOne({
-          'reviews._id': req.params.id,
-        }).then(function (ride) {
-          if (!ride) return res.redirect('/rides');
-          ride.reviews.remove(req.params.id);
-          ride.save().then(function () {
-            res.redirect(`/rides/${ride._id}`);
-          }).catch(function (err) {
-            return next(err);
-          });
+const deleteJournal = async(req, res, next) => {
+    try {
+        const arrived = await Arrived.findOne({
+            'journal._id': req.params.id,
         });
-      }
+        const goal = await Goal.findOne({
+            'journal._id': req.params.id,
+        })
+        if (!arrived) {return res.redirect('/arrived');}
+        if (!goal) {return res.redirect('/goal');}
+        arrived.journal.remove(req.params.id);
+        goal.journal.remove(req.params.id);
+        await arrived.save();
+        await goal.save();
+        res.json({arrived,goal})
+    } catch (err){
+        next(err)
+    }
+};
 
       module.exports = {
         create,
