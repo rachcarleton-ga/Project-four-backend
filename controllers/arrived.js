@@ -1,5 +1,5 @@
 const express = require('express')
-const {Arrived} = require('../models')
+const { Arrived } = require('../models/Arrived')
 
 const index = async (req,res,next) => {
 	try {
