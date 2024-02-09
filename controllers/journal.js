@@ -1,6 +1,6 @@
 const express = require('express')
-const {Arrived} = require('../models/Arrived')
-const {Goal} = require('../models/Goal')
+const Arrived = require('../models/Arrived')
+const Goal = require('../models/Goal')
 
 const create = async (req,res) => {
     const arrived = await Arrived.findById(req.params.id)

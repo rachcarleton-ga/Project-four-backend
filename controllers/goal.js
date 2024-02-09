@@ -1,5 +1,5 @@
 const express = require('express')
-const {Goal} = require('../models/Goal')
+const Goal = require('../models/Goal')
 
 const index = async (req,res,next) => {
 	try {
