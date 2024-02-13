@@ -37,6 +37,16 @@ const goalShow = async (req, res) => {
     }
 }
 
+const arrivedShow = async (req, res) => {
+
+    try {
+        let arrivedJournal = await Journal.find({arrived:req.params.id})
+        res.json({arrivedJournal})
+    } catch (err) {
+        res.status(400).json(err);  
+    }
+}
+
 const deleteJournal = async(req, res, next) => {
     try {
         const arrived = await Arrived.findOne({
@@ -60,5 +70,7 @@ const deleteJournal = async(req, res, next) => {
       module.exports = {
         goalCreate,
         arrivedCreate,
+        goalShow,
+        arrivedShow,
         delete: deleteJournal
       };
