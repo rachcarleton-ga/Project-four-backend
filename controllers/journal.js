@@ -1,20 +1,41 @@
 const express = require('express')
 const Arrived = require('../models/Arrived')
 const Goal = require('../models/Goal')
+const Journal = require('../models/Journal')
 
-const create = async (req,res) => {
-    const arrived = await Arrived.findById(req.params.id)
-    const goal = await Goal.findById(req.params.id)
-    arrived.journal.push(req.body)
-    goal.journal.push(req.body)
+const goalCreate = async (req,res) => {
+    let newJournal = await Journal.create(req.body)
+    let goal = await Goal.findById(req.params.id)
+    newJournal.goal = goal._id
     try {
-        await arrived.save();
-        await goal.save();
-        res.json({arrived, goal})
+        await newJournal.save();
+        res.json({newJournal})
       } catch (err) {
         res.status(400).json(err);  
       }
     }
+
+    const arrivedCreate = async (req,res) => {
+        let newJournal = await Journal.create(req.body)
+        let arrived = await Arrived.findById(req.params.id)
+        newJournal.arrived = arrived._id
+        try {
+            await newJournal.save();
+            res.json({newJournal})
+          } catch (err) {
+            res.status(400).json(err);  
+          }
+        }
+
+const goalShow = async (req, res) => {
+
+    try {
+        let goalJournal = await Journal.find({goal:req.params.id})
+        res.json({goalJournal})
+    } catch (err) {
+        res.status(400).json(err);  
+    }
+}
 
 const deleteJournal = async(req, res, next) => {
     try {
@@ -37,6 +58,7 @@ const deleteJournal = async(req, res, next) => {
 };
 
       module.exports = {
-        create,
+        goalCreate,
+        arrivedCreate,
         delete: deleteJournal
       };
