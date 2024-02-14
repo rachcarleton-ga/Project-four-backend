@@ -47,6 +47,24 @@ const arrivedShow = async (req, res) => {
     }
 }
 
+const goalEdit = async (req, res) => {
+    try {
+        let updatedJournal = await Journal.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.json({updatedJournal})
+    } catch (err) {
+        res.status(400).json(err);  
+    }
+}
+
+const arrivedEdit = async (req, res) => {
+    try {
+        let updatedJournal = await Journal.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.json({updatedJournal})
+    } catch (err) {
+        res.status(400).json(err);  
+    }
+}
+
 const goalDelete = async(req, res, next) => {
     try {
         const goal = await Goal.findOne({
@@ -79,6 +97,8 @@ const arrivedDelete = async(req, res, next) => {
         arrivedCreate,
         goalShow,
         arrivedShow,
+        goalEdit,
+        arrivedEdit,
         goalDelete,
         arrivedDelete
       };
