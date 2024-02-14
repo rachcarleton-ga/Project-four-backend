@@ -67,29 +67,25 @@ const arrivedEdit = async (req, res) => {
 
 const goalDelete = async(req, res, next) => {
     try {
-        const goal = await Goal.findOne({
-            'journal._id': req.params.id,
-        })
-        if (!goal) {return res.redirect('/goal');}
-        goal.journal.remove(req.params.id);
-        await goal.save();
-        res.json({goal})
-    } catch (err){
-        next(err)
+        const journal = await Journal.findByIdAndDelete(req.params.id);
+        if (!journal) {
+            return res.status(400).json({ error: "Journal entry not found for the provided ID." });
+        }
+        res.json({ message: "Journal entry deleted successfully." });
+    } catch (err) {
+        next(err);
     }
 };
 
 const arrivedDelete = async(req, res, next) => {
     try {
-        const arrived = await Arrived.findOne({
-            'journal._id': req.params.id,
-        });
-        if (!arrived) {return res.redirect('/arrived');}
-        arrived.journal.remove(req.params.id);
-        await arrived.save();
-        res.json({goal})
-    } catch (err){
-        next(err)
+        const journal = await Journal.findByIdAndDelete(req.params.id);
+        if (!journal) {
+            return res.status(400).json({ error: "Journal entry not found for the provided ID." });
+        }
+        res.json({ message: "Journal entry deleted successfully." });
+    } catch (err) {
+        next(err);
     }
 };
       module.exports = {
