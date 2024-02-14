@@ -47,30 +47,38 @@ const arrivedShow = async (req, res) => {
     }
 }
 
-const deleteJournal = async(req, res, next) => {
+const goalDelete = async(req, res, next) => {
     try {
-        const arrived = await Arrived.findOne({
-            'journal._id': req.params.id,
-        });
         const goal = await Goal.findOne({
             'journal._id': req.params.id,
         })
-        if (!arrived) {return res.redirect('/arrived');}
         if (!goal) {return res.redirect('/goal');}
-        arrived.journal.remove(req.params.id);
         goal.journal.remove(req.params.id);
-        await arrived.save();
         await goal.save();
-        res.json({arrived,goal})
+        res.json({goal})
     } catch (err){
         next(err)
     }
 };
 
+const arrivedDelete = async(req, res, next) => {
+    try {
+        const arrived = await Arrived.findOne({
+            'journal._id': req.params.id,
+        });
+        if (!arrived) {return res.redirect('/arrived');}
+        arrived.journal.remove(req.params.id);
+        await arrived.save();
+        res.json({goal})
+    } catch (err){
+        next(err)
+    }
+};
       module.exports = {
         goalCreate,
         arrivedCreate,
         goalShow,
         arrivedShow,
-        delete: deleteJournal
+        goalDelete,
+        arrivedDelete
       };
