@@ -48,6 +48,7 @@ const arrivedShow = async (req, res) => {
 }
 
 const goalEdit = async (req, res) => {
+    console.log("apple")
     try {
         let updatedJournal = await Journal.findByIdAndUpdate(req.params.id, req.body, {new: true})
         res.json({updatedJournal})
@@ -57,7 +58,9 @@ const goalEdit = async (req, res) => {
 }
 
 const arrivedEdit = async (req, res) => {
+    console.log("banana")
     try {
+        console.log(req.body)
         let updatedJournal = await Journal.findByIdAndUpdate(req.params.id, req.body, {new: true})
         res.json({updatedJournal})
     } catch (err) {
